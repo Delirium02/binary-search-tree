@@ -32,14 +32,37 @@ class Tree {
 		while (currentNode) {
 			if (currentNode.data === value) return true;
 
-			if (value < currentNode.data) {
-				currentNode = currentNode.left;
-			} else {
-				currentNode = currentNode.right
-			}
+			currentNode =
+				value < currentNode.data ? currentNode.left : currentNode.right;
 		}
 
 		return false;
+	}
+
+	insert(value) {
+		if (this.root === null) {
+			this.root = new Node(value);
+		}
+
+		let currentNode = this.root;
+
+		while (currentNode.data) {
+			if (value === currentNode.data) return;
+
+			if (value < currentNode.data) {
+				if (currentNode.left === null) {
+					currentNode.left = new Node(value);
+					return;
+				}
+				currentNode = currentNode.left;
+			} else {
+				if (currentNode.right === null) {
+					currentNodel.right = new Node(value);
+					return;
+				}
+				currentNode = currentNode.right;
+			}
+		}
 	}
 }
 
