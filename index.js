@@ -17,10 +17,29 @@ class Tree {
 
 		const mid = Math.floor(array.length / 2);
 		const node = new Node(array[mid]);
+
 		node.left = this.buildTree(array.slice(0, mid));
 		node.right = this.buildTree(array.slice(mid + 1));
 
 		return node;
+	}
+
+	includes(value) {
+		if (this.data === value) return true;
+
+		let currentNode = this.root;
+
+		while (currentNode) {
+			if (currentNode.data === value) return true;
+
+			if (value < currentNode.data) {
+				currentNode = currentNode.left;
+			} else {
+				currentNode = currentNode.right
+			}
+		}
+
+		return false;
 	}
 }
 
