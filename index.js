@@ -64,6 +64,48 @@ class Tree {
 			}
 		}
 	}
+
+	// helper function for the deleteItem method
+	getSuccessor(node) {
+		node = node.right;
+		while (node.left !== null && node !== null) {
+			node = node.left;
+		}
+		return node;
+	}
+
+	deleteItem(value) {
+		let parentNode = null;
+		let currentNode = this.root;
+
+		while (currentNode && currentNode.data !== value) {
+			parentNode = currentNode;
+			currentNode = value < currentNode.data ? currentNode.left : currentNode.right;
+		}
+
+		if (!currentNode) return;
+
+		// if the node being deleted has 0 or 1 child
+		if (currentNode.left === null || currentNode.right === null) {
+			let replacement = currentNode.left ? currentNode.left : currentNode.right;
+
+			if (!parentNode) {
+				this.root = replacement;
+			} else if (parentNode.left === currentNode) {
+				parentNode.left = replacement;
+			} else {
+				parentNode.right = replacement;
+			}
+		}
+
+		// if the node being deleted has 2 children
+		else {
+			const successor = this.getSuccessor(currentNode);
+			const tempData = successor.data;
+			this.deleteItem(successor.data);
+			currentNode.data = tempData;
+		}
+	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
