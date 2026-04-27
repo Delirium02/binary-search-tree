@@ -106,6 +106,23 @@ class Tree {
 			currentNode.data = tempData;
 		}
 	}
+
+	levelOrderForEach(callback) {
+		if (!this.root) return;
+
+		if (callback === undefined || callback === null) {
+			throw new Error("A callback is required!");
+		}
+
+		const queue = [this.root];
+
+		while (queue.length > 0) {
+			let currentNode = queue.shift();
+			callback(currentNode);
+			if (currentNode.left !== null) queue.push(currentNode.left);
+			if (currentNode.right !== null) queue.push(currentNode.right);
+		}
+	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
