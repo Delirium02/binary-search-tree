@@ -27,13 +27,13 @@ class Tree {
 	includes(value) {
 		if (this.data === value) return true;
 
-		let currentNode = this.root;
+		let current = this.root;
 
-		while (currentNode) {
-			if (currentNode.data === value) return true;
+		while (current) {
+			if (current.data === value) return true;
 
-			currentNode =
-				value < currentNode.data ? currentNode.left : currentNode.right;
+			current =
+				value < current.data ? current.left : current.right;
 		}
 
 		return false;
@@ -44,23 +44,23 @@ class Tree {
 			this.root = new Node(value);
 		}
 
-		let currentNode = this.root;
+		let current = this.root;
 
-		while (currentNode.data) {
-			if (value === currentNode.data) return;
+		while (current.data) {
+			if (value === current.data) return;
 
-			if (value < currentNode.data) {
-				if (currentNode.left === null) {
-					currentNode.left = new Node(value);
+			if (value < current.data) {
+				if (current.left === null) {
+					current.left = new Node(value);
 					return;
 				}
-				currentNode = currentNode.left;
+				current = current.left;
 			} else {
-				if (currentNode.right === null) {
-					currentNodel.right = new Node(value);
+				if (current.right === null) {
+					currentl.right = new Node(value);
 					return;
 				}
-				currentNode = currentNode.right;
+				current = current.right;
 			}
 		}
 	}
@@ -76,22 +76,22 @@ class Tree {
 
 	deleteItem(value) {
 		let parentNode = null;
-		let currentNode = this.root;
+		let current = this.root;
 
-		while (currentNode && currentNode.data !== value) {
-			parentNode = currentNode;
-			currentNode = value < currentNode.data ? currentNode.left : currentNode.right;
+		while (current && current.data !== value) {
+			parentNode = current;
+			current = value < current.data ? current.left : current.right;
 		}
 
-		if (!currentNode) return;
+		if (!current) return;
 
 		// if the node being deleted has 0 or 1 child
-		if (currentNode.left === null || currentNode.right === null) {
-			let replacement = currentNode.left ? currentNode.left : currentNode.right;
+		if (current.left === null || current.right === null) {
+			let replacement = current.left ? current.left : current.right;
 
 			if (!parentNode) {
 				this.root = replacement;
-			} else if (parentNode.left === currentNode) {
+			} else if (parentNode.left === current) {
 				parentNode.left = replacement;
 			} else {
 				parentNode.right = replacement;
@@ -100,10 +100,10 @@ class Tree {
 
 		// if the node being deleted has 2 children
 		else {
-			const successor = this.getSuccessor(currentNode);
+			const successor = this.getSuccessor(current);
 			const tempData = successor.data;
 			this.deleteItem(successor.data);
-			currentNode.data = tempData;
+			current.data = tempData;
 		}
 	}
 
@@ -115,11 +115,11 @@ class Tree {
 		const queue = [this.root];
 
 		while (queue.length > 0) {
-			let currentNode = queue.shift();
-			callback(currentNode);
+			let current = queue.shift();
+			callback(current);
 			
-			if (currentNode.left !== null) queue.push(currentNode.left);
-			if (currentNode.right !== null) queue.push(currentNode.right);
+			if (current.left !== null) queue.push(current.left);
+			if (current.right !== null) queue.push(current.right);
 		}
 	}
 	
@@ -130,11 +130,11 @@ class Tree {
 		const queue = [this.root];
 
 		while (queue.length > 0) {
-			let currentNode = queue.pop();
-			callback(currentNode);
+			let current = queue.pop();
+			callback(current);
 			
-			if (currentNode.right !== null) queue.push(currentNode.right);
-			if (currentNode.left !== null) queue.push(currentNode.left);
+			if (current.right !== null) queue.push(current.right);
+			if (current.left !== null) queue.push(current.left);
 		}
 	}
 
@@ -175,6 +175,39 @@ class Tree {
 		while (resultStack.length > 0) {
 			callback(resultStack.pop());
 		}
+	}
+
+	height(value) {
+		if (!this.root) return undefined;
+
+		let targetNode = null;
+		let current = this.root;
+
+		while (current !== null) {
+			if (value === current) {
+				targetNode = current;
+				break;
+			}
+			current = value < current.left ? current.left : current.right;
+		}
+
+		if (!targetNode) return undefined;
+
+		let queue = [targetNode];
+		let height = -1;
+
+		while (queue.length > 0) {
+			let levelSize = queue.length;
+			height++;
+
+			for (let i = 0; i < levelSize; i++) {
+				let node = queue.shift();
+				if (node.left) queue.push(node.left);
+				if (node.right) queue.push(node.right);
+			}
+		}
+
+		return height;
 	}
 }
 
