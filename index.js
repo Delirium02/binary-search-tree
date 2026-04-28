@@ -109,19 +109,32 @@ class Tree {
 
 	levelOrderForEach(callback) {
 		if (!this.root) return;
-
-		if (callback === undefined || callback === null) {
-			throw new Error("A callback is required!");
-		}
-
+		if (!callback) throw new Error("A callback is required!");
+		
 		const queue = [this.root];
 
 		while (queue.length > 0) {
 			let currentNode = queue.shift();
 			callback(currentNode);
+			
 			if (currentNode.left !== null) queue.push(currentNode.left);
 			if (currentNode.right !== null) queue.push(currentNode.right);
 		}
+	}
+	
+	preOrderForEach(callback) {
+		if (!callback) throw new Error("A callback is required!");
+
+		const traverse = (node) => {
+			if (!node) return;
+
+			callback(node);
+
+			traverse(node.left);
+			traverse(node.right);
+		}
+
+		traverse(this.root);
 	}
 }
 
