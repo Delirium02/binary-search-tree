@@ -209,6 +209,20 @@ class Tree {
 
 		return height;
 	}
+
+	depth(value) {
+		if (!this.root) return undefined;
+
+		let current = this.root;
+		let depth = 0;
+
+		while (current && current.data !== value) {
+			depth++;
+			current = value < current.data ? current.left : current.right;
+		}
+
+		return current ? depth : undefined;
+	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
