@@ -156,6 +156,26 @@ class Tree {
 			current = current.right;
 		}
 	}
+
+	postOrderForEach(callback) {
+		if (!this.root) return;
+		if (!callback) throw new Error("A callback is required!");
+
+		const stack = [this.root];
+		const resultStack = [];
+
+		while (stack.length > 0) {
+			let node = stack.pop();
+			resultStack.push(node);
+
+			if (node.left) stack.push(node.left);
+			if (node.right) stack.push(node.right);
+		}
+
+		while (resultStack.length > 0) {
+			callback(resultStack.pop());
+		}
+	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
