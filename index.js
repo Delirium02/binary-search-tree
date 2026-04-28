@@ -107,6 +107,7 @@ class Tree {
 		}
 	}
 
+	// opting to use iteration instead of recursion for the traverse methods
 	levelOrderForEach(callback) {
 		if (!this.root) return;
 		if (!callback) throw new Error("A callback is required!");
@@ -123,18 +124,37 @@ class Tree {
 	}
 	
 	preOrderForEach(callback) {
+		if (!this.root) return;
 		if (!callback) throw new Error("A callback is required!");
 
-		const traverse = (node) => {
-			if (!node) return;
+		const queue = [this.root];
 
-			callback(node);
-
-			traverse(node.left);
-			traverse(node.right);
+		while (queue.length > 0) {
+			let currentNode = queue.pop();
+			callback(currentNode);
+			
+			if (currentNode.right !== null) queue.push(currentNode.right);
+			if (currentNode.left !== null) queue.push(currentNode.left);
 		}
+	}
 
-		traverse(this.root);
+	inOrderForEach(callback) {
+		if (!this.root) return;
+		if (!callback) throw new Error("A callback is required!");
+
+		const stack = [];
+		let current = this.root;
+
+		while (stack.length > 0 || current !== null) {
+			while (current !== null) {
+				current = current.left;
+			}
+
+			current = stack.pop();
+			callback(current);
+
+			current = current.right;
+		}
 	}
 }
 
