@@ -223,6 +223,30 @@ class Tree {
 
 		return current ? depth : undefined;
 	}
+
+	isBalanced() {
+		if (!this.root) return true;
+		
+		let balanced = true;
+		let queue = [this.root];
+
+		while (queue.length > 0) {
+			let node = queue.pop();
+
+			let leftHeight = this.height(node.left ? node.left.data : null);
+			let rightHeight = this.height(node.right ? node.right.data : null);
+
+			if (Math.abs(leftHeight - rightHeight) > 1) {
+				balanced = false;
+				break;
+			}
+
+			if (node.left) queue.push(node.left);
+			if (node.right) queue.push(node.right);
+		}
+
+		return balanced;
+	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
