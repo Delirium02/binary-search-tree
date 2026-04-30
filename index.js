@@ -32,8 +32,7 @@ class Tree {
 		while (current) {
 			if (current.data === value) return true;
 
-			current =
-				value < current.data ? current.left : current.right;
+			current = value < current.data ? current.left : current.right;
 		}
 
 		return false;
@@ -111,18 +110,18 @@ class Tree {
 	levelOrderForEach(callback) {
 		if (!this.root) return;
 		if (!callback) throw new Error("A callback is required!");
-		
+
 		const queue = [this.root];
 
 		while (queue.length > 0) {
 			let current = queue.shift();
 			callback(current);
-			
+
 			if (current.left !== null) queue.push(current.left);
 			if (current.right !== null) queue.push(current.right);
 		}
 	}
-	
+
 	preOrderForEach(callback) {
 		if (!this.root) return;
 		if (!callback) throw new Error("A callback is required!");
@@ -132,7 +131,7 @@ class Tree {
 		while (queue.length > 0) {
 			let current = queue.pop();
 			callback(current);
-			
+
 			if (current.right !== null) queue.push(current.right);
 			if (current.left !== null) queue.push(current.left);
 		}
@@ -225,29 +224,24 @@ class Tree {
 	}
 
 	isBalanced() {
-		if (!this.root) return true;
-		
-		let balanced = true;
-		let queue = [this.root];
+		const checkHeight = (node) => {
+			if (!node) return 0;
 
-		while (queue.length > 0) {
-			let node = queue.pop();
+			let leftH = checkHeight(node.left);
+			if (leftH === -1) return -1;
+			
+			let rightH = checkHeight(node.right);
+			if (rightH === -1) return -1;
 
-			let leftHeight = this.height(node.left ? node.left.data : null);
-			let rightHeight = this.height(node.right ? node.right.data : null);
+			if (Math.abs(leftH - rightH) > 1) return -1;
 
-			if (Math.abs(leftHeight - rightHeight) > 1) {
-				balanced = false;
-				break;
-			}
-
-			if (node.left) queue.push(node.left);
-			if (node.right) queue.push(node.right);
+			return Math.max(leftH, rightH) + 1;
 		}
 
-		return balanced;
+		return checkHeight(this.root) !== -1;
 	}
 }
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 console.log(tree);
+console.log(tree.isBalanced());
