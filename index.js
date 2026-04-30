@@ -13,7 +13,7 @@ class Tree {
 	}
 
 	buildTree(array) {
-		if (array.length === 0) return;
+		if (array.length === 0) return null;
 
 		const mid = Math.floor(array.length / 2);
 		const node = new Node(array[mid]);
@@ -56,7 +56,7 @@ class Tree {
 				current = current.left;
 			} else {
 				if (current.right === null) {
-					currentl.right = new Node(value);
+					current.right = new Node(value);
 					return;
 				}
 				current = current.right;
@@ -146,6 +146,7 @@ class Tree {
 
 		while (stack.length > 0 || current !== null) {
 			while (current !== null) {
+				stack.push(current);
 				current = current.left;
 			}
 
@@ -229,19 +230,62 @@ class Tree {
 
 			let leftH = checkHeight(node.left);
 			if (leftH === -1) return -1;
-			
+
 			let rightH = checkHeight(node.right);
 			if (rightH === -1) return -1;
 
 			if (Math.abs(leftH - rightH) > 1) return -1;
 
 			return Math.max(leftH, rightH) + 1;
-		}
+		};
 
 		return checkHeight(this.root) !== -1;
 	}
+
+	// helper function for rebalance();
+	inOrder() {
+		const result = [];
+		const stack = [];
+		let current = this.root;
+
+		if (!current) return [];
+
+		while (stack.length > 0 || current) {
+			if (current !== null) {
+				stack.push(current);
+				current = current.left;
+			} else {
+				current = stack.pop();
+				result.push(current.data);
+				current = current.right;
+			}
+		}
+
+		return result;
+	}
+
+	rebalance() {
+		if (this.isBalanced()) return;
+
+		const balancedArray = this.inOrder();
+
+		return new Tree(balancedArray);
+	}
 }
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-console.log(tree);
-console.log(tree.isBalanced());
+
+//testing the rebalance() method:
+
+const tree = new Tree([10, 20, 30]); 
+
+tree.insert(40);
+tree.insert(50);
+tree.insert(60);
+tree.insert(70);
+
+console.log("Balanced before?", tree.isBalanced());
+
+const newTree = tree.rebalance();
+
+console.log("Balanced after?", newTree.isBalanced());
+console.log("Data intact?", newTree.inOrder());
