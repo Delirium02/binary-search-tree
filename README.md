@@ -1,24 +1,28 @@
-Binary Search Tree (BST) Implementation
+Binary Search Tree
 
-A JavaScript implementation of a Balanced Binary Search Tree. This project focuses on efficient data management, utilizing both recursive and iterative approaches to handle tree traversal and structural integrity.
+A custom JavaScript implementation of a Balanced Binary Search Tree (BST), designed to store and manage data with O(logn) efficiency for search, insertion, and deletion operations.
 Key Features
 
-    Self-Balancing: Includes a rebalance method that transforms an unbalanced structure into a perfectly balanced tree using sorted array reconstruction.
+    Initial Balancing: Automatically sorts and removes duplicates from input arrays to build a perfectly balanced tree from the start.
 
-    Dynamic Operations: Supports insert, deleteItem, and includes while maintaining BST properties.
+    Balance Monitoring: A recursive validation system that checks if the tree is height-balanced (ensuring subtrees differ by no more than one level).
 
-    Comprehensive Traversal: Implements Level-Order, Pre-Order, In-Order, and Post-Order traversals using iterative stack/queue management.
+    Manual Rebalancing: Provides a way to restructure skewed trees into a balanced state by flattening data and rebuilding the node hierarchy.
 
-    Structural Metrics: Methods to calculate height, depth, and verify tree balance via a recursive height-check algorithm with a O(n) "poison pill" flag.
+    Iterative Traversals: Uses manual stack and queue management for all traversal methods to ensure memory efficiency and avoid stack overflow.
 
-Core Logic Overview
+Methods
 
-    Reconstruction: The tree is initially built from a sorted, unique array to ensure an O(logn) search time.
+    insert(value) / deleteItem(value): Add or remove data while maintaining the BST property (Left < Root < Right).
 
-    Balancing Check: Employs a recursive isBalanced check that calculates heights and identifies imbalances (difference >1) by propagating a -1 signal up the call stack.
+    includes(value): Search the tree for a specific value with logarithmic time complexity.
 
-    Iterative Traversals: Opts for manual stack management for traversals to avoid stack overflow on deep trees and to demonstrate control over memory pointers.
+    height(node) / depth(node): Measure the distance from a node to its lowest leaf or back up to the root.
 
-Technical Reflection
+    isTreeBalanced(): Returns a boolean indicating if the tree’s current structure is efficient.
 
-    This project was a deep dive into the "recursion wall." It bridges the gap between high-level abstract logic (recursive tree building) and low-level mechanical execution (iterative stack manipulation).
+    Traversals: levelOrder, preOrder, inOrder, and postOrder for flexible data extraction.
+
+Logic Overview
+
+The tree utilizes In-Order Traversal to extract data in a sorted array format. During rebalancing, the middle element of the sorted data is selected as the root, and the process is applied recursively to the left and right halves. This ensures the maximum height of the tree remains log2​(n), preventing the structure from degenerating into a linked list.
